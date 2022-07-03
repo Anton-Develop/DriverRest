@@ -73,16 +73,16 @@ namespace DriverRest.Controllers
                                 
                                                                 
                                 var date = DataTransformer.Date_for_CMD(Convert.ToUInt32(SrcAddr), Convert.ToUInt32(DstAddr), pid,CMD,status, TextSTR);
-                               
 
-                                
-                               // var BYUY = Data_Services.CRC8_131();
-                              //  Console.WriteLine(BYUY);
+                                var crc = Data_Services.SUM(date);
+
+                                // var BYUY = Data_Services.CRC8_131();
+                                Console.WriteLine("CRC8_131___"+crc);
                                 //Console.WriteLine(date.Length);
 
 
 
-                               
+
                                 #region Call TCP Server
 
 
@@ -126,7 +126,7 @@ namespace DriverRest.Controllers
                 Console.WriteLine(ex);
             }
             
-            return Ok();
+            return Ok("Пришла пора комаров кормить");
             
             
 
