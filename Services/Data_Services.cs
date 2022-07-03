@@ -148,7 +148,7 @@ namespace DriverRest.Services
                 if (lbuf[0] >= 0x20 && lbuf[0] != 0x7F)
                 {
                     //bufHL =Array concat([bufHL, lbuf], msg.bufHL.length+1);
-                    bufHL = (byte)(Buffer.BlockCopy(bufHL, 0, lbuf, (byte)bufHL.Length + 1,14));  //Concat(bufHL, lbuf,bufHL.length + 1);
+                   // bufHL = (byte)(Buffer.BlockCopy(bufHL, 0, lbuf, (byte)bufHL.Length + 1,14));  //Concat(bufHL, lbuf,bufHL.length + 1);
 
                 }
                 else

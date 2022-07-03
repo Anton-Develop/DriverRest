@@ -42,15 +42,38 @@ namespace DriverRest.Services
                 paket.Data = (byte[])vs.Clone();
                 vs1 = Data_Services.StructToBytes(paket);
 
-               // var BYUY = Data_Services.CRC8_131();
+               
 
                
 
             }
-            //Установка часов табло
+            //Установка часов табло Сторка должна быть через пробел!
             if (command == "0x03")
             {
-                
+                TcomPaket paket = new TcomPaket();
+                Console.WriteLine("Установка часов");
+                paket.SrcAddr = (SrcAddr);
+                paket.DstAddr = (DstAddr);
+                paket.PId = PId;
+                paket.Cmd = 0x03;
+                paket.Status = Status;
+                paket.DataLen = 6;
+
+
+                int len = 6;
+                byte[] vs = new byte[len];
+
+                string[] words = TextSTR.Split(' ');
+                vs[0] = Convert.ToByte(words[0]);
+                vs[1] = Convert.ToByte(words[1]);
+                vs[2] = Convert.ToByte(words[2]);
+                vs[3] = Convert.ToByte(words[3]);
+                vs[4] = Convert.ToByte(words[4]);
+                vs[5] = Convert.ToByte(words[5]);
+               
+                paket.Data = (byte[])vs.Clone();
+                vs1 = Data_Services.StructToBytes(paket);
+
             }
             //Чтение часов 
             if (command == "0x04")
