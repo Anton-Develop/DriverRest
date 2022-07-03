@@ -9,18 +9,18 @@ namespace DriverRest.Models
       
         
         [StructLayout(LayoutKind.Sequential, Pack = 1)]
-        [Serializable]
+        //[Serializable]
         public  struct TcomPaket
         {
 
-            public uint SrcAddr;
-            public uint DstAddr;
-            public byte PId;
-            public byte Cmd;
-            public byte Status;
-            public uint DataLen;
-            public byte[] Data;
-        };
+            public uint SrcAddr { get; set; }
+            public uint DstAddr { get; set; }
+            public byte PId { get; set; }
+            public byte Cmd { get; set; }
+            public byte Status { get; set; }
+            public uint DataLen { get; set; }
+            public byte[] Data { get; set; }
+    };
        
       
 

@@ -81,13 +81,13 @@ namespace DriverRest.Services
         }
 
 
-        public static byte CRC8_131()
+        public static byte CRC8_131(byte[] buffcopy)
         {
-            TcomPaket paket = new TcomPaket();
-            Console.WriteLine(paket.Cmd);
+            
+           
             var poly = 0x131;                             //  задаём полином для 0, 4, 5 и 8 битов, как в описании  CRC X8 + X5 + X4 + 1
             int crc = 0;
-            var buff = Data_Services.StructToBytes(paket);
+            var buff = buffcopy;
             for(int i=0;i<buff.Length;i++)
             {
                 crc = crc ^ buff[i];

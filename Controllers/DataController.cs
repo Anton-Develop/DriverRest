@@ -67,23 +67,22 @@ namespace DriverRest.Controllers
                                 var  Color   = Data.ElementAtOrDefault(5).Value;
                                 var  Alighn  = Data.ElementAtOrDefault(6).Value;
                                 var  TextSTR = Data.ElementAtOrDefault(7).Value.ToString();
-
+                                byte pid = 0;
+                                byte status = 1;
+                               
                                 
-                                TcomPaket paket= new TcomPaket();
-                                paket.SrcAddr = Convert.ToUInt32(SrcAddr);
-                                paket.DstAddr = Convert.ToUInt32(DstAddr);
-
-                                var date = DataTransformer.Date_for_CMD(CMD, TextSTR);
-                                paket.Data = date;
+                                                                
+                                var date = DataTransformer.Date_for_CMD(Convert.ToUInt32(SrcAddr), Convert.ToUInt32(DstAddr), pid,CMD,status, TextSTR);
+                               
 
                                 
                                // var BYUY = Data_Services.CRC8_131();
-                                //Console.WriteLine(BYUY);
+                              //  Console.WriteLine(BYUY);
                                 //Console.WriteLine(date.Length);
 
 
 
-                                Console.WriteLine(paket.Cmd);
+                               
                                 #region Call TCP Server
 
 

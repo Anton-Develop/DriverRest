@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
 using DriverRest.Models;
@@ -10,7 +11,7 @@ namespace DriverRest.Services
     public class DataTransformer
     {
        
-        public static byte[] Date_for_CMD(string command,string TextSTR)
+        public static byte[] Date_for_CMD(uint SrcAddr, uint DstAddr, byte PId,string command, byte Status,string TextSTR)
         {
             
            
@@ -24,17 +25,26 @@ namespace DriverRest.Services
             //Установка яркости
             if (command == "0x02")
             {
-                TcomPaket paket;
+
+                TcomPaket paket=new TcomPaket();
                 Console.WriteLine("Установка яркости");
-                paket.DataLen = 1;
+                paket.SrcAddr = (SrcAddr);
+                paket.DstAddr = (DstAddr);
+                paket.PId = PId;
                 paket.Cmd = 0x02;
-                Console.WriteLine("TR:" + paket.Cmd+"command____"+command);
+                paket.Status = Status;
+                paket.DataLen = 1;
+                
+               
                 int len = 1;
                 byte[] vs = new byte[len];
                 vs[0] = Convert.ToByte(TextSTR);
-                vs1 = (byte[])vs.Clone();
+                paket.Data = (byte[])vs.Clone();
+                vs1 = Data_Services.StructToBytes(paket);
 
+               // var BYUY = Data_Services.CRC8_131();
 
+               
 
             }
             //Установка часов табло
