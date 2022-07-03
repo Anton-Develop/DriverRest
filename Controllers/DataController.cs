@@ -72,8 +72,10 @@ namespace DriverRest.Controllers
                                 TcomPaket paket= new TcomPaket();
                                 paket.SrcAddr = Convert.ToUInt32(SrcAddr);
                                 paket.DstAddr = Convert.ToUInt32(DstAddr);
-                                var BYUY = Data_Services.StructToBytes(paket);
-                                Console.WriteLine(BYUY.Length);
+                                
+                                var BYUY = Data_Services.CRC8_131();
+                                Console.WriteLine(paket.DstAddr);
+                                Console.WriteLine(BYUY);
 
 
 
