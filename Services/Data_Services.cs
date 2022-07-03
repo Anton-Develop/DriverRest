@@ -22,7 +22,7 @@ namespace DriverRest.Services
     {
        
        
-        public static byte[] RawSerialize(object anything)
+        private static byte[] RawSerialize(object anything)
         {
             int rawsize = Marshal.SizeOf(anything);
             byte[] rawdata = new byte[rawsize];
@@ -32,7 +32,7 @@ namespace DriverRest.Services
             return rawdata;
         }
 
-        private static byte[] GetArray(TcomPaket str)
+        public void GetArray(TcomPaket str)
         {
 
             
@@ -50,7 +50,7 @@ namespace DriverRest.Services
                 {
                     Marshal.FreeHGlobal(ptr);
                 }
-                return arr;
+              //  return arr;
                         
         }
 
@@ -84,15 +84,15 @@ namespace DriverRest.Services
         public static byte CRC8_131()
         {
             TcomPaket paket = new TcomPaket();
-            byte msg;
+            Console.WriteLine(paket.Cmd);
             var poly = 0x131;                             //  задаём полином для 0, 4, 5 и 8 битов, как в описании  CRC X8 + X5 + X4 + 1
             int crc = 0;
             var buff = Data_Services.StructToBytes(paket);
             for(int i=0;i<buff.Length;i++)
             {
                 crc = crc ^ buff[i];
-
-                for(int j=8;j>0;j--)                      //  по одному смещаем биты влево и проверяем четвёртый бит, если он поднят, то инвертируем биты по полиному.
+               
+                for (int j=8;j>0;j--)                      //  по одному смещаем биты влево и проверяем четвёртый бит, если он поднят, то инвертируем биты по полиному.
                 {
                     if ((crc & 0x80) == 0x80)
                     {
@@ -102,11 +102,12 @@ namespace DriverRest.Services
                     {
                         crc = (crc << 1);
                     }
+                    
                 }
             }
-
-            msg =(byte) crc;
-            return msg;
+            
+            
+            return (byte)crc; 
         }
     }
 

@@ -7,14 +7,15 @@ using DriverRest.Models;
 
 namespace DriverRest.Services
 {
-    public class CMD
+    public class DataTransformer
     {
        
-        public static byte[] CMD_(string command,string TextSTR)
+        public static byte[] Date_for_CMD(string command,string TextSTR)
         {
-            TcomPaket paket;
-            int len=0;
-            byte[] vs = new byte[len];
+            
+           
+            byte[] vs1=new byte[0];
+            
             //Проверка соединения
             if (command == "0x01")
             {
@@ -23,13 +24,18 @@ namespace DriverRest.Services
             //Установка яркости
             if (command == "0x02")
             {
-                
-                paket.Cmd = 0x02;
+                TcomPaket paket;
+                Console.WriteLine("Установка яркости");
                 paket.DataLen = 1;
-                len = 1;
+                paket.Cmd = 0x02;
+                Console.WriteLine("TR:" + paket.Cmd+"command____"+command);
+                int len = 1;
+                byte[] vs = new byte[len];
                 vs[0] = Convert.ToByte(TextSTR);
+                vs1 = (byte[])vs.Clone();
 
-                
+
+
             }
             //Установка часов табло
             if (command == "0x03")
@@ -45,6 +51,7 @@ namespace DriverRest.Services
             if (command == "0x05")
             {
                 
+
             }
 
             //Вывод текста в текстовые поля
@@ -72,7 +79,7 @@ namespace DriverRest.Services
             {
                 
             }
-            return vs;
+            return vs1;
         }
     }
 }
