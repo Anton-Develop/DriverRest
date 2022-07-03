@@ -68,13 +68,7 @@ namespace DriverRest.Controllers
                                 var  Alighn  = Data.ElementAtOrDefault(6).Value;
                                 var  TextSTR = Data.ElementAtOrDefault(7).Value;
 
-                                //AddInputData addInputData = new AddInputData();
-                                //addInputData.Cmd = Services.CMD.CMD_(CMD);
-                                //addInputData.DstAddr =Convert.ToUInt32( DstAddr);
-                                //addInputData.SrcAddr = Convert.ToUInt32(SrcAddr);
-                                //addInputData.PId = counter_pid;
-                                //Console.WriteLine(addInputData.PId);
-
+                                
                                 TcomPaket paket= new TcomPaket();
                                 paket.SrcAddr = Convert.ToUInt32(SrcAddr);
                                 paket.DstAddr = Convert.ToUInt32(DstAddr);
