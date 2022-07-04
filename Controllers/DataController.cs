@@ -61,18 +61,18 @@ namespace DriverRest.Controllers
                                 
                                 var  SrcAddr = Data.ElementAtOrDefault(0).Value;
                                 var  DstAddr = Data.ElementAtOrDefault(1).Value;
-                                var  IP      = Data.ElementAtOrDefault(2).Value;
+                                var  IP      = Data.ElementAtOrDefault(2).Value.ToString();
                                 var  CMD     = Data.ElementAtOrDefault(3).Value.ToString();
-                                var  strNum  = Data.ElementAtOrDefault(4).Value;
-                                var  Color   = Data.ElementAtOrDefault(5).Value;
-                                var  Alighn  = Data.ElementAtOrDefault(6).Value;
+                                var  strNum  = Data.ElementAtOrDefault(4).Value.ToString();
+                                var  Color   = Data.ElementAtOrDefault(5).Value.ToString();
+                                var  Alighn  = Data.ElementAtOrDefault(6).Value.ToString();
                                 var  TextSTR = Data.ElementAtOrDefault(7).Value.ToString();
                                 byte pid = 0;
                                 byte status = 1;
                                
                                 
                                                                 
-                                var date = DataTransformer.Date_for_CMD(Convert.ToUInt32(SrcAddr), Convert.ToUInt32(DstAddr), pid,CMD,status, TextSTR);
+                                var date = DataTransformer.Date_for_CMD(Convert.ToUInt32(SrcAddr), Convert.ToUInt32(DstAddr), pid,CMD,status, TextSTR,strNum,Color,Alighn);
 
                                 var crc = Data_Services.SUM(date);
 

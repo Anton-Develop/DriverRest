@@ -11,7 +11,7 @@ namespace DriverRest.Services
     public class DataTransformer
     {
        
-        public static byte[] Date_for_CMD(uint SrcAddr, uint DstAddr, byte PId,string command, byte Status,string TextSTR)
+        public static byte[] Date_for_CMD(uint SrcAddr, uint DstAddr, byte PId,string command, byte Status,string TextSTR,string STRNum,string Color,string Align)
         {
             
            
@@ -83,8 +83,42 @@ namespace DriverRest.Services
             //Вывод текста в текстовые зоны
             if (command == "0x05")
             {
+                TcomPaket paket = new TcomPaket();
+                Console.WriteLine("Вывод текста в текстовые зоны");
+                paket.SrcAddr = (SrcAddr);
+                paket.DstAddr = (DstAddr);
+                paket.PId = PId;
+                paket.Cmd = 0x05;
+                paket.Status = Status;
+
+                Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
+                Encoding encoding = Encoding.GetEncoding("windows-1251");
+                byte[] array = encoding.GetBytes(TextSTR);
+                paket.DataLen = (byte)(9+ array.Length);
                 
 
+                int len = (byte)(9 + array.Length);
+                byte[] vs = new byte[len];
+                vs[0] = 0;// number displey;
+                vs[1] = Convert.ToByte(STRNum);
+                vs[2] = Convert.ToByte(Align);
+                vs[3] = 0x80;
+                vs[4] = 0;// speed text;
+                vs[5]= Convert.ToByte(Color);
+                vs[6] = 0;
+                vs[7] = 0;
+                vs[8] = 0;
+
+                for (int i = 0; i < array.Length; i++)
+                {
+                    for (int j = 9; j < vs.Length; j++)
+                    {
+                        vs[j] = array[i];
+                    }
+
+                }
+                paket.Data = (byte[])vs.Clone();
+                vs1 = Data_Services.StructToBytes(paket);
             }
 
             //Вывод текста в текстовые поля
