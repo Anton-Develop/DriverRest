@@ -111,10 +111,10 @@ namespace DriverRest.Services
 
                 for (int i = 0; i < array.Length; i++)
                 {
-                    for (int j = 9; j < vs.Length; j++)
-                    {
-                        vs[j] = array[i];
-                    }
+                   
+                        vs[9+i] = array[i];
+                        Console.Write(vs[i]);
+                    
 
                 }
                 paket.Data = (byte[])vs.Clone();
