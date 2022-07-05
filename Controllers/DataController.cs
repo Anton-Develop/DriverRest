@@ -16,6 +16,7 @@ using System.Collections;
 using System.Text.Json;
 using System.Runtime.Serialization.Json;
 using System.Net;
+using Microsoft.AspNetCore.Http.Extensions;
 
 namespace DriverRest.Controllers
 {
@@ -25,13 +26,11 @@ namespace DriverRest.Controllers
     public class DataController :  ControllerBase
     {
         private IDictionary<string, object> Data;
-        private IDictionary<string, object> Data2;
+        // private IDictionary<string, object> Data2;
         // private List<GetInputData> Data2; 
-       
-        private byte counter_pid;
 
         
-        
+
 
 
         [HttpPost]
@@ -43,10 +42,7 @@ namespace DriverRest.Controllers
 
        public IActionResult POST ([FromBody] IEnumerable<GetInputData> contex)
         {
-          
-          
-            
-          
+
             if (contex == null)
             {
                 return BadRequest();
