@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 using Swashbuckle.AspNetCore.Annotations;
 using DriverRest.Models;
 using DriverRest.Services;
-
+using System.Diagnostics.Tracing;
 using System.IO;
 using System.Text;
 using Microsoft.AspNetCore.Mvc.ModelBinding.Binders;
@@ -15,6 +15,7 @@ using System.Threading;
 using System.Collections;
 using System.Text.Json;
 using System.Runtime.Serialization.Json;
+using System.Net;
 
 namespace DriverRest.Controllers
 {
@@ -26,8 +27,13 @@ namespace DriverRest.Controllers
         private IDictionary<string, object> Data;
         private IDictionary<string, object> Data2;
         // private List<GetInputData> Data2; 
-
+       
         private byte counter_pid;
+
+        
+        
+
+
         [HttpPost]
         [SwaggerOperation(Summary = "Creates the product data", Description = "Returns newly created productData")]
         [SwaggerResponse(200, "Everything worked and returns the newly created product")]
@@ -37,7 +43,10 @@ namespace DriverRest.Controllers
 
        public IActionResult POST ([FromBody] IEnumerable<GetInputData> contex)
         {
-            counter_pid = (byte)(counter_pid + 1);
+          
+          
+            
+          
             if (contex == null)
             {
                 return BadRequest();
@@ -53,21 +62,24 @@ namespace DriverRest.Controllers
                     {
 
                         Data = ObjectToDictionaryHelper.ToDictionary(contex.ElementAtOrDefault(i));
-                       
-                        
+
+
                         switch (i)
                         {
                             case 0:
+
+                                var SrcAddr = Data.ElementAtOrDefault(0).Value;
+                                var DstAddr = Data.ElementAtOrDefault(1).Value;
+                                var IP = Data.ElementAtOrDefault(2).Value.ToString();
+                                var CMD = Data.ElementAtOrDefault(3).Value.ToString();
+                                var strNum = Data.ElementAtOrDefault(4).Value.ToString();
+                                var Color = Data.ElementAtOrDefault(5).Value.ToString();
+                                var Alighn = Data.ElementAtOrDefault(6).Value.ToString();
+                                var TextSTR = Data.ElementAtOrDefault(7).Value.ToString();
                                 
-                                var  SrcAddr = Data.ElementAtOrDefault(0).Value;
-                                var  DstAddr = Data.ElementAtOrDefault(1).Value;
-                                var  IP      = Data.ElementAtOrDefault(2).Value.ToString();
-                                var  CMD     = Data.ElementAtOrDefault(3).Value.ToString();
-                                var  strNum  = Data.ElementAtOrDefault(4).Value.ToString();
-                                var  Color   = Data.ElementAtOrDefault(5).Value.ToString();
-                                var  Alighn  = Data.ElementAtOrDefault(6).Value.ToString();
-                                var  TextSTR = Data.ElementAtOrDefault(7).Value.ToString();
-                                byte pid = 0;
+                                
+                                 byte pid = 0; 
+
                                 byte status = 1;
                                
                                 

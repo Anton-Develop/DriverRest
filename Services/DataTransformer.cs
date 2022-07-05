@@ -20,7 +20,13 @@ namespace DriverRest.Services
             //Проверка соединения
             if (command == "0x01")
             {
-                
+                TcomPaket paket = new TcomPaket
+                {
+                    SrcAddr = (SrcAddr),
+                    DstAddr = (DstAddr),
+                    PId = PId,
+                    Cmd = 0x01
+                };
             }
             //Установка яркости
             if (command == "0x02")
@@ -124,7 +130,41 @@ namespace DriverRest.Services
             //Вывод текста в текстовые поля
             if (command == "0x1B")
             {
-               
+                TcomPaket paket = new TcomPaket();
+                Console.WriteLine("Вывод текста в текстовые зоны");
+                paket.SrcAddr = (SrcAddr);
+                paket.DstAddr = (DstAddr);
+                paket.PId = PId;
+                paket.Cmd = 0x1B;
+                paket.Status = Status;
+
+                Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
+                Encoding encoding = Encoding.GetEncoding("windows-1251");
+                byte[] array = encoding.GetBytes(TextSTR);
+                paket.DataLen = (byte)(7 + array.Length);
+
+
+                int len = (byte)(7 + array.Length);
+                byte[] vs = new byte[len];
+                vs[0] = 0;// number row;
+                vs[1] = 0;//number cells
+                vs[2] = Convert.ToByte(STRNum);
+                vs[3] = Convert.ToByte(Color);
+                vs[4] = Convert.ToByte(Align);
+                vs[5] = 0x80;
+                vs[6] = 0; //this const NOT USED!
+                
+
+                for (int i = 0; i < array.Length; i++)
+                {
+
+                    vs[7 + i] = array[i];
+                    Console.Write(vs[i]);
+
+
+                }
+                paket.Data = (byte[])vs.Clone();
+                vs1 = Data_Services.StructToBytes(paket);
             }
             //Вывод данных на семисегментные индикаторы по строкам и столбцам
             if (command == "0x0F")
