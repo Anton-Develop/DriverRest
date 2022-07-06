@@ -27,10 +27,7 @@ namespace DriverRest.Controllers
     public class DataController :  ControllerBase
     {
         private IDictionary<string, object> Data;
-        // private IDictionary<string, object> Data2;
-        // private List<GetInputData> Data2; 
-
-        
+            
 
 
 
