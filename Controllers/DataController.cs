@@ -23,6 +23,7 @@ namespace DriverRest.Controllers
     [Route("api/[controller]")]
     [Produces("application/json")]
     [ApiController]
+    
     public class DataController :  ControllerBase
     {
         private IDictionary<string, object> Data;

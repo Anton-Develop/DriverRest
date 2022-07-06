@@ -70,7 +70,7 @@ namespace DriverRest
                 ForwardedHeaders = ForwardedHeaders.XForwardedFor |
     ForwardedHeaders.XForwardedProto
             });
-            HttpContext httpContext;
+            
         }
     }
 }
