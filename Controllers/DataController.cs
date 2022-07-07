@@ -26,7 +26,7 @@ namespace DriverRest.Controllers
     
     public class DataController :  ControllerBase
     {
-        private IDictionary<string, object> Data;
+        protected IDictionary<string, object> Data;
             
 
 
@@ -80,10 +80,12 @@ namespace DriverRest.Controllers
                                                                 
                                 var date = DataTransformer.Date_for_CMD(Convert.ToUInt32(SrcAddr), Convert.ToUInt32(DstAddr), pid,CMD,status, TextSTR,strNum,Color,Alighn);
 
-                                var crc = Data_Services.SUM(date);
+                                var crc = CRC.Coding(date); //Data_Services.SUM(date);
 
                                 // var BYUY = Data_Services.CRC8_131();
-                                Console.WriteLine("CRC8_131___"+crc);
+                                
+                                    Console.WriteLine("CRC8_131___" + crc);
+                                
                                 //Console.WriteLine(date.Length);
 
 
@@ -130,7 +132,7 @@ namespace DriverRest.Controllers
             }
             catch (Exception ex)
             {
-                Console.WriteLine(ex);
+                Console.WriteLine("Post error:___"+ex);
             }
             
             return Ok("Пришла пора комаров кормить");

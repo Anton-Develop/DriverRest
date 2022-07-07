@@ -10,16 +10,17 @@ namespace DriverRest.Services
     
         public class TcpHelper
         {
-            private static TcpListener listener { get; set; }
+            private static TcpListener Listener { get; set; }
             private static bool accept { get; set; }
             
-        public  void StartServer(string IP_Address,int port)
+        public  void StartServer(string IP_Address,int port, byte[] data,out byte[] buffer)
             {
-                try
+            buffer = new byte[1024];
+            try
                 {
                     IPAddress address = IPAddress.Parse(IP_Address);
-                    listener = new TcpListener(address, port);
-                    listener.Start();
+                    Listener = new TcpListener(address, port);
+                    Listener.Start();
                     accept = true;
                 }
                 catch (Exception ex)
@@ -28,22 +29,24 @@ namespace DriverRest.Services
                 }
                 finally
                 {
-                    Listen();
-                    listener.Stop();
+                    Listen(data,out buffer);
+                    Listener.Stop();
                 }
 
             
         }
-            public static void Listen()
+            public static void Listen(byte[] data,out byte[] buffer)
             {
-                try
+            buffer = new byte[1024];
+            try
                 {
-                    if (listener != null && accept)
+              
+                if (Listener != null && accept)
                     {
                         while (true)
                         {
                             Console.WriteLine("Waiting connection...");
-                            var clientTask = listener.AcceptTcpClientAsync();
+                            var clientTask = Listener.AcceptTcpClientAsync();
                             if (clientTask.Result != null)
                             {
                                 var client = clientTask.Result;
@@ -53,7 +56,7 @@ namespace DriverRest.Services
                                 {
                                     try
                                     {
-                                        byte[] data = Encoding.ASCII.GetBytes("Send next data:[enter 'quit' to terminate]");
+                                        data = Encoding.ASCII.GetBytes("Send next data:[enter 'quit' to terminate]");
                                         client.GetStream().Write(data, 0, data.Length);
                                     }
                                     catch(Exception ex)
@@ -62,7 +65,7 @@ namespace DriverRest.Services
                                     }
                                     try
                                     {
-                                        byte[] buffer = new byte[1024];
+                                       
                                         client.GetStream().Read(buffer, 0, buffer.Length);
                                     }
                                     catch(Exception ex)

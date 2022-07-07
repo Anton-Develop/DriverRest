@@ -13,9 +13,9 @@ namespace DriverRest.Services
        
         public static byte[] Date_for_CMD(uint SrcAddr, uint DstAddr, byte PId,string command, byte Status,string TextSTR,string STRNum,string Color,string Align)
         {
-            
-           
-            byte[] vs1=new byte[0];
+
+
+            byte[] vs1 = Array.Empty<byte>();//  new byte[0];
             
             //Проверка соединения
             if (command == "0x01")
