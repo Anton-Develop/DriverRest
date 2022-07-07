@@ -72,7 +72,7 @@ namespace DriverRest.Controllers
                                 var TextSTR = Data.ElementAtOrDefault(7).Value.ToString();
                                 
                                 
-                                 byte pid = 0; 
+                                byte pid = 0; 
 
                                 byte status = 1;
                                
@@ -80,20 +80,12 @@ namespace DriverRest.Controllers
                                                                 
                                 var date = DataTransformer.Date_for_CMD(Convert.ToUInt32(SrcAddr), Convert.ToUInt32(DstAddr), pid,CMD,status, TextSTR,strNum,Color,Alighn);
 
-                                var crc = CRC.Coding(date); //Data_Services.SUM(date);
-
-                                // var BYUY = Data_Services.CRC8_131();
-                                
-                                    Console.WriteLine("CRC8_131___" + crc);
-                                
-                                //Console.WriteLine(date.Length);
-
-
-
+                                var Word_Cooding = CRC.Coding(date);
+                                byte[] Status_Feedback;
 
                                 #region Call TCP Server
-                                //TcpHelper _TcpServer = new TcpHelper();
-                                //_TcpServer.StartServer(IP,5023);
+                                TcpHelper _TcpServer = new TcpHelper();
+                                _TcpServer.StartServer(IP, 5023,Word_Cooding,out Status_Feedback);
 
                                 #endregion
                                 break;
