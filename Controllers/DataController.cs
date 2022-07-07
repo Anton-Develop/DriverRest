@@ -90,7 +90,8 @@ namespace DriverRest.Controllers
 
 
                                 #region Call TCP Server
-
+                                //TcpHelper _TcpServer = new TcpHelper();
+                                //_TcpServer.StartServer(IP,5023);
 
                                 #endregion
                                 break;
