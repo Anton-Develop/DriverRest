@@ -80,7 +80,7 @@ namespace DriverRest.Services
 
             return Result;
         }
-        public static byte[] CRC8_131(byte[] Message)
+        protected static byte[] CRC8_131(byte[] Message)
         {
             //выдаваемый массив CRC
             byte[] CRC = new byte[256];
@@ -115,7 +115,7 @@ namespace DriverRest.Services
             }
             return CRC;
         }
-        public static int SUM_CRC8_131(byte[] Message)
+        protected static int SUM_CRC8_131(byte[] Message)
         {
             //byte[] CRC = new byte[1];
             ushort Register = 0; // создаем регистр, в котором будем сохранять высчитанный CRC
@@ -142,18 +142,24 @@ namespace DriverRest.Services
             //  кодирование длины сообщения
             var lb0 = (buff.Length & 0x7F) | 0x80;
             var lb1 = ((buff.Length >> 7) & 0x7F) | 0x80;
-            bufHL[0] = 0x02;  //   маркер начала пакета
+           
+            bufHL[0] = (byte)0x02;  //   маркер начала пакета
             bufHL[1] = (byte)lb0;       // Длина пакета (младшие 7 бит)
             bufHL[2] = (byte)lb1;       // Длина пакета (старшие 7 бит)
 
+            
+
             for (int i = 0; i < buff.Length; i++)
             {
+              
                 lbuf[0] = (byte)(buff[i] ^ 0x80);                  // У каждого байта b инвертируется старший бит (операция b=b^0x80).
                 if (lbuf[0] >= 0x20 && lbuf[0] != 0x7F)    // Если получившийся байт b больше или равен 0x20 и не равен 0x7F, то он остается без изменений (b).
                 {
                     var LOW = bufHL.Length + 1;
                     var HIGHT = ConcatA(bufHL, lbuf);
                     bufHL = ConcatArrays(HIGHT, BitConverter.GetBytes(LOW));
+
+
 
                 }
                 else
@@ -169,13 +175,15 @@ namespace DriverRest.Services
             }
             var BCRC8 = SUM_CRC8_131(buff);
             var b1 = bufHL;
-            var b2 = BitConverter.GetBytes((BCRC8 & 0x7F) | 0x80);
-            var b3 = BitConverter.GetBytes(((BCRC8 >> 7) & 0x7F )| 0x80);
-            var b4 = BitConverter.GetBytes(0x03);
-            var b5 = BitConverter.GetBytes(bufHL.Length + 3);
+            var low7leng = ((BCRC8 & 0x7F) | 0x80);
+            var b2 = new byte[] { (byte)low7leng };
+            var b3 = new byte[] { (byte)(((BCRC8 >> 7) & 0x7F) | 0x80) };
+            var b4 = new byte[] { (0x03) };
+           // var b5 = new byte[] { (byte)(bufHL.Length + 3) };
 
 
-            bufHL = ConcatA(b1,b2,b3,b4,b5);
+             bufHL = ConcatA(b1,b2,b3,b4);
+           
             return bufHL;
         }
     }

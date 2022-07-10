@@ -9,8 +9,8 @@ namespace DriverRest.Models
       
         
         [StructLayout(LayoutKind.Sequential, Pack = 1)]
-        //[Serializable]
-        public  struct TcomPaket
+    [Serializable]
+    public  struct TcomPaket
         {
 
             public uint SrcAddr { get; set; }
@@ -20,7 +20,7 @@ namespace DriverRest.Models
             public byte Status { get; set; }
             public uint DataLen { get; set; }
             public byte[] Data { get; set; }
-    };
+        };
        
       
 

@@ -1,18 +1,23 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
+using System.Runtime.InteropServices;
 
 namespace DriverRest.Models
 {
-    public class AddInputData
+
+    [StructLayout(LayoutKind.Sequential, Pack = 1)]
+    //[Serializable]
+    public struct TcomPaket_Feedback
     {
-        /* Class for transition for Tablo*/
-        public UInt32 SrcAddr { get; set; }     //адрес отправителя
-        public UInt32 DstAddr { get; set; }     //адрес получателя
-        public byte PId { get; set; }       //идентификатор пакета - инкрементируемое или случайное число,
-        public byte Cmd { get; set; }       // код команды
-        public byte Flags { get; set; }    // флаги-опции команды. В нормальном режиме равен 0.
-        public byte Status { get; set; }    //статус выполнения команды
-        public UInt32 DataLen { get; set; } //длина данных в поле Data, от 0 до 511
-        public byte[] Data {get;set;}
-    }
+
+        public uint SrcAddr { get; set; }
+        public uint DstAddr { get; set; }
+        public byte PId { get; set; }
+        public byte Cmd { get; set; }
+        public byte Status { get; set; }
+        public uint DataLen { get; set; }
+        public byte[] Data { get; set; }
+    };
+
+
 }

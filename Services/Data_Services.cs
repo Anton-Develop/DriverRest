@@ -17,7 +17,7 @@ using DriverRest.Models;
 
 namespace DriverRest.Services
 {
-    public class Data_Services
+    public static class Data_Services
 
     {
        
@@ -32,27 +32,7 @@ namespace DriverRest.Services
             return rawdata;
         }
 
-        public void GetArray(TcomPaket str)
-        {
-
-            
-                int size = Marshal.SizeOf(str);
-                byte[] arr = new byte[size];
-
-                IntPtr ptr = IntPtr.Zero;
-                try
-                {
-                    ptr = Marshal.AllocHGlobal(size);
-                    Marshal.StructureToPtr(str, ptr, true);
-                    Marshal.Copy(ptr, arr, 0, size);
-                }
-                finally
-                {
-                    Marshal.FreeHGlobal(ptr);
-                }
-              //  return arr;
-                        
-        }
+      
 
         public static byte[] StructToBytes(TcomPaket myStruct)
         {
@@ -68,23 +48,50 @@ namespace DriverRest.Services
         }
 
 
-        private static TcomPaket BytesToStruct(byte[] arr)
+        public static TcomPaket_Feedback BytesToStruct(byte[] arr)
         {
-            int size = Marshal.SizeOf(typeof(TcomPaket));
+            int size = Marshal.SizeOf(typeof(TcomPaket_Feedback));
 
             IntPtr buffer = Marshal.AllocHGlobal(size);
             Marshal.Copy(arr, 0, buffer, size);
-            var myStruct = (TcomPaket)Marshal.PtrToStructure(buffer, typeof(TcomPaket));
+            var myStruct = (TcomPaket_Feedback)Marshal.PtrToStructure(buffer, typeof(TcomPaket_Feedback));
             Marshal.FreeHGlobal(buffer);
 
             return myStruct;
         }
 
 
-      
+        #region new
+        public static byte[] StructToByteArray<T>(T obj)
+        {
+            using (MemoryStream ms = new MemoryStream())
+            {
+                FieldInfo[] infos = typeof(T).GetFields(BindingFlags.Public | BindingFlags.Instance);
+                foreach (FieldInfo info in infos)
+                {
+                    BinaryFormatter bf = new BinaryFormatter();
+                    using (MemoryStream inms = new MemoryStream())
+                    {
 
-     
+                        bf.Serialize(inms, info.GetValue(obj));
+                        byte[] ba = inms.ToArray();
+                        // for length
+                        ms.Write(BitConverter.GetBytes(ba.Length), 0, sizeof(int));
+
+                        // for value
+                        ms.Write(ba, 0, ba.Length);
+                    }
+                }
+
+                return ms.ToArray();
+            }
+        }
+        #endregion
+
+
+
+
     }
 
-       
+
 }

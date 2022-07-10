@@ -46,11 +46,11 @@ namespace DriverRest.Services
                 byte[] vs = new byte[len];
                 vs[0] = Convert.ToByte(TextSTR);
                 paket.Data = (byte[])vs.Clone();
-                vs1 = Data_Services.StructToBytes(paket);
+                vs1 = Data_Services.StructToByteArray<TcomPaket>(paket);
 
-               
 
-               
+
+
 
             }
             //Установка часов табло Сторка должна быть через пробел!
@@ -78,7 +78,7 @@ namespace DriverRest.Services
                 vs[5] = Convert.ToByte(words[5]);
                
                 paket.Data = (byte[])vs.Clone();
-                vs1 = Data_Services.StructToBytes(paket);
+                vs1 = Data_Services.StructToByteArray<TcomPaket>(paket);
 
             }
             //Чтение часов 
@@ -90,6 +90,7 @@ namespace DriverRest.Services
             if (command == "0x05")
             {
                 TcomPaket paket = new TcomPaket();
+                
                 Console.WriteLine("Вывод текста в текстовые зоны");
                 paket.SrcAddr = (SrcAddr);
                 paket.DstAddr = (DstAddr);
@@ -100,6 +101,8 @@ namespace DriverRest.Services
                 Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
                 Encoding encoding = Encoding.GetEncoding("windows-1251");
                 byte[] array = encoding.GetBytes(TextSTR);
+                
+               
                 paket.DataLen = (byte)(9+ array.Length);
                 
 
@@ -108,23 +111,30 @@ namespace DriverRest.Services
                 vs[0] = 0;// number displey;
                 vs[1] = Convert.ToByte(STRNum);
                 vs[2] = Convert.ToByte(Align);
-                vs[3] = 0x80;
+                vs[3] = (byte)8;
                 vs[4] = 0;// speed text;
                 vs[5]= Convert.ToByte(Color);
                 vs[6] = 0;
                 vs[7] = 0;
                 vs[8] = 0;
-
+               
                 for (int i = 0; i < array.Length; i++)
                 {
-                   
                         vs[9+i] = array[i];
-                        Console.Write(vs[i]);
-                    
-
+                   
                 }
+                foreach(var item in vs)
+                {
+                    Console.Write(item);
+                }
+                //Array.Copy(vs, 1, paket.Data, 0, vs.Length);
+                Console.WriteLine("");
                 paket.Data = (byte[])vs.Clone();
-                vs1 = Data_Services.StructToBytes(paket);
+               
+                Console.WriteLine("");
+                vs1 = Data_Services.StructToByteArray<TcomPaket>(paket);
+                
+
             }
 
             //Вывод текста в текстовые поля
@@ -159,12 +169,12 @@ namespace DriverRest.Services
                 {
 
                     vs[7 + i] = array[i];
-                    Console.Write(vs[i]);
+                    
 
 
                 }
                 paket.Data = (byte[])vs.Clone();
-                vs1 = Data_Services.StructToBytes(paket);
+                vs1 = Data_Services.StructToByteArray<TcomPaket>(paket);
             }
             //Вывод данных на семисегментные индикаторы по строкам и столбцам
             if (command == "0x0F")

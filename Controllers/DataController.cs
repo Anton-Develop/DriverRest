@@ -81,11 +81,17 @@ namespace DriverRest.Controllers
                                 var date = DataTransformer.Date_for_CMD(Convert.ToUInt32(SrcAddr), Convert.ToUInt32(DstAddr), pid,CMD,status, TextSTR,strNum,Color,Alighn);
 
                                 var Word_Cooding = CRC.Coding(date);
+                                for (int l=0; l<Word_Cooding.Length;l++)
+                                {
+                                    //Console.WriteLine("bit"+l+"  =  "+Word_Cooding[l]);
+                                }
+                                
                                 byte[] Status_Feedback;
 
                                 #region Call TCP Server
-                                TcpHelper _TcpServer = new TcpHelper();
-                                _TcpServer.StartServer(IP, 5023,Word_Cooding,out Status_Feedback);
+                                //TcpHelper _TcpServer = new TcpHelper();
+                                //_TcpServer.StartServer(IP, 5023,Word_Cooding,out Status_Feedback);
+                                //TcomPaket_Feedback tcomPaket_Feedback = Data_Services.BytesToStruct(Status_Feedback);
 
                                 #endregion
                                 break;
