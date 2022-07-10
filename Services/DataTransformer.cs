@@ -200,17 +200,33 @@ namespace DriverRest.Services
             //Считывание данных (семисегментные индикаторы) по строкам и столбцам
             if (command == "0x10")
             {
-               
+                Console.WriteLine("Считывание данных (семисегментные индикаторы) по строкам и столбцам");
+                TcomPaket paket = new TcomPaket
+                {
+                    SrcAddr = (SrcAddr),
+                    DstAddr = (DstAddr),
+                    PId = PId,
+                    Cmd = 0x10,
+                    DataLen = 4,
+                    Data = new byte[4],
+                    Status =Status                
+                };
+                paket.Data[0] = 1;
+                paket.Data[1] = 1;
+                vs1 = Data_Services.StructToByteArray<TcomPaket>(paket);
             }
             //Установка значений счетчиков
             if (command == "0x53")
             {
-                
+                Console.WriteLine("Установка значений счетчиков");
+               
+               
             }
             //Считывание значений счетчиков
             if (command == "0x52")
             {
-                
+                Console.WriteLine("Считывание значений счетчиков");
+
             }
             return vs1;
         }
