@@ -27,6 +27,7 @@ namespace DriverRest.Services
                     PId = PId,
                     Cmd = 0x01
                 };
+                vs1 = Data_Services.StructToByteArray<TcomPaket>(paket);
             }
             //Установка яркости
             if (command == "0x02")
@@ -40,12 +41,11 @@ namespace DriverRest.Services
                 paket.Cmd = 0x02;
                 paket.Status = Status;
                 paket.DataLen = 1;
+                paket.Data = new byte[paket.DataLen];
+
+
+                paket.Data[0] = Convert.ToByte(TextSTR);
                 
-               
-                int len = 1;
-                byte[] vs = new byte[len];
-                vs[0] = Convert.ToByte(TextSTR);
-                paket.Data = (byte[])vs.Clone();
                 vs1 = Data_Services.StructToByteArray<TcomPaket>(paket);
 
 
@@ -64,20 +64,19 @@ namespace DriverRest.Services
                 paket.Cmd = 0x03;
                 paket.Status = Status;
                 paket.DataLen = 6;
+                paket.Data = new byte[paket.DataLen];
 
 
-                int len = 6;
-                byte[] vs = new byte[len];
 
                 string[] words = TextSTR.Split(' ');
-                vs[0] = Convert.ToByte(words[0]);
-                vs[1] = Convert.ToByte(words[1]);
-                vs[2] = Convert.ToByte(words[2]);
-                vs[3] = Convert.ToByte(words[3]);
-                vs[4] = Convert.ToByte(words[4]);
-                vs[5] = Convert.ToByte(words[5]);
+                paket.Data[0] = Convert.ToByte(words[0]);
+                paket.Data[1] = Convert.ToByte(words[1]);
+                paket.Data[2] = Convert.ToByte(words[2]);
+                paket.Data[3] = Convert.ToByte(words[3]);
+                paket.Data[4] = Convert.ToByte(words[4]);
+                paket.Data[5] = Convert.ToByte(words[5]);
                
-                paket.Data = (byte[])vs.Clone();
+              
                 vs1 = Data_Services.StructToByteArray<TcomPaket>(paket);
 
             }
@@ -104,34 +103,27 @@ namespace DriverRest.Services
                 
                
                 paket.DataLen = (byte)(9+ array.Length);
-                
+                paket.Data = new byte[paket.DataLen];
 
-                int len = (byte)(9 + array.Length);
-                byte[] vs = new byte[len];
-                vs[0] = 0;// number displey;
-                vs[1] = Convert.ToByte(STRNum);
-                vs[2] = Convert.ToByte(Align);
-                vs[3] = (byte)8;
-                vs[4] = 0;// speed text;
-                vs[5]= Convert.ToByte(Color);
-                vs[6] = 0;
-                vs[7] = 0;
-                vs[8] = 0;
+
+                paket.Data[0] = 0;// number displey;
+                paket.Data[1] = Convert.ToByte(STRNum);
+                paket.Data[2] = Convert.ToByte(Align);
+                paket.Data[3] = (byte)8;
+                paket.Data[4] = 0;// speed text;
+                paket.Data[5]= Convert.ToByte(Color);
+                paket.Data[6] = 0;
+                paket.Data[7] = 0;
+                paket.Data[8] = 0;
                
                 for (int i = 0; i < array.Length; i++)
                 {
-                        vs[9+i] = array[i];
+                    paket.Data[9+i] = array[i];
                    
                 }
-                foreach(var item in vs)
-                {
-                    Console.Write(item);
-                }
-                //Array.Copy(vs, 1, paket.Data, 0, vs.Length);
-                Console.WriteLine("");
-                paket.Data = (byte[])vs.Clone();
+                
                
-                Console.WriteLine("");
+               
                 vs1 = Data_Services.StructToByteArray<TcomPaket>(paket);
                 
 
@@ -152,34 +144,58 @@ namespace DriverRest.Services
                 Encoding encoding = Encoding.GetEncoding("windows-1251");
                 byte[] array = encoding.GetBytes(TextSTR);
                 paket.DataLen = (byte)(7 + array.Length);
+                paket.Data = new byte[paket.DataLen];
 
 
-                int len = (byte)(7 + array.Length);
-                byte[] vs = new byte[len];
-                vs[0] = 0;// number row;
-                vs[1] = 0;//number cells
-                vs[2] = Convert.ToByte(STRNum);
-                vs[3] = Convert.ToByte(Color);
-                vs[4] = Convert.ToByte(Align);
-                vs[5] = 0x80;
-                vs[6] = 0; //this const NOT USED!
+                paket.Data[0] = 0;// number row;
+                paket.Data[1] = 0;//number cells
+                paket.Data[2] = Convert.ToByte(STRNum);
+                paket.Data[3] = Convert.ToByte(Color);
+                paket.Data[4] = Convert.ToByte(Align);
+                paket.Data[5] = 0x80;
+                paket.Data[6] = 0; //this const NOT USED!
                 
 
                 for (int i = 0; i < array.Length; i++)
                 {
 
-                    vs[7 + i] = array[i];
+                    paket.Data[7 + i] = array[i];
                     
 
 
                 }
-                paket.Data = (byte[])vs.Clone();
+               
                 vs1 = Data_Services.StructToByteArray<TcomPaket>(paket);
             }
             //Вывод данных на семисегментные индикаторы по строкам и столбцам
             if (command == "0x0F")
             {
+                TcomPaket pakets = new TcomPaket();
+                Console.WriteLine("Вывод данных на семисегментные индикаторы по строкам и столбцам");
+
                
+                pakets.SrcAddr= (SrcAddr);
+                pakets.DstAddr = DstAddr;
+                pakets.PId = PId;
+                pakets.Status = Status;
+                Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
+                Encoding encoding = Encoding.GetEncoding("windows-1251");
+                byte[] array = encoding.GetBytes(TextSTR);
+                pakets.DataLen = (byte)(9 + array.Length);
+                pakets.Data = new byte[pakets.DataLen];
+                pakets.Data[0] = 1; //Number row
+                pakets.Data[1] = 2; //Number cells
+                pakets.Data[2] = Convert.ToByte(Align);
+                pakets.Data[3] = 8;
+                pakets.Data[6] = 0; //Number effect;
+                pakets.Data[7] = 0;
+                for (int i=0; i<array.Length;i++)
+                {
+                    pakets.Data[9 + i] = array[i];
+                }
+                vs1 = Data_Services.StructToByteArray<TcomPaket>(pakets);
+
+
             }
             //Считывание данных (семисегментные индикаторы) по строкам и столбцам
             if (command == "0x10")

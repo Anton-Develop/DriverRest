@@ -153,28 +153,27 @@ namespace DriverRest.Services
             {
               
                 lbuf[0] = (byte)(buff[i] ^ 0x80);                  // У каждого байта b инвертируется старший бит (операция b=b^0x80).
+                
                 if (lbuf[0] >= 0x20 && lbuf[0] != 0x7F)    // Если получившийся байт b больше или равен 0x20 и не равен 0x7F, то он остается без изменений (b).
                 {
-                    var LOW = bufHL.Length + 1;
-                    var HIGHT = ConcatA(bufHL, lbuf);
-                    bufHL = ConcatArrays(HIGHT, BitConverter.GetBytes(LOW));
+                    
+                    bufHL = ConcatA(bufHL, lbuf);
 
-
-
+                                     
+                  
                 }
                 else
                 {
                     if (lbuf[0] < 0x20 || lbuf[0] == 0x7F)     //  Если получившийся байт меньше, чем 0x20 или равен 0x7F то он заменяется на 2 байта: 0x7F и (b | 0x80). 
                     {
                         lbuf[0] = (byte)(lbuf[0] | 0x80);
-                        var HIGHT = ConcatA(bufHL, lbuf, hbuf);
-                        var LOW = bufHL.Length + 2;
-                        bufHL = ConcatArrays(HIGHT, BitConverter.GetBytes(LOW));
+                        bufHL = ConcatA(bufHL, lbuf, hbuf);
+                     
                     }
                 }
             }
             var BCRC8 = SUM_CRC8_131(buff);
-            var b1 = bufHL;
+           
             var low7leng = ((BCRC8 & 0x7F) | 0x80);
             var b2 = new byte[] { (byte)low7leng };
             var b3 = new byte[] { (byte)(((BCRC8 >> 7) & 0x7F) | 0x80) };
@@ -182,7 +181,7 @@ namespace DriverRest.Services
            // var b5 = new byte[] { (byte)(bufHL.Length + 3) };
 
 
-             bufHL = ConcatA(b1,b2,b3,b4);
+             bufHL = ConcatA(bufHL, b2,b3,b4);
            
             return bufHL;
         }

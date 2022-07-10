@@ -20,8 +20,8 @@ namespace DriverRest.Services
     public static class Data_Services
 
     {
-       
-       
+
+        #region old
         private static byte[] RawSerialize(object anything)
         {
             int rawsize = Marshal.SizeOf(anything);
@@ -60,35 +60,38 @@ namespace DriverRest.Services
             return myStruct;
         }
 
-
+        #endregion
         #region new
         public static byte[] StructToByteArray<T>(T obj)
         {
-            using (MemoryStream ms = new MemoryStream())
-            {
-                FieldInfo[] infos = typeof(T).GetFields(BindingFlags.Public | BindingFlags.Instance);
-                foreach (FieldInfo info in infos)
-                {
-                    BinaryFormatter bf = new BinaryFormatter();
-                    using (MemoryStream inms = new MemoryStream())
-                    {
+            int size = Marshal.SizeOf(obj);
+            byte[] arr = new byte[size];
 
-                        bf.Serialize(inms, info.GetValue(obj));
-                        byte[] ba = inms.ToArray();
-                        // for length
-                        ms.Write(BitConverter.GetBytes(ba.Length), 0, sizeof(int));
+            GCHandle handle = GCHandle.Alloc(arr, GCHandleType.Pinned);
+            Marshal.StructureToPtr(obj, handle.AddrOfPinnedObject(), false);
+            handle.Free();
 
-                        // for value
-                        ms.Write(ba, 0, ba.Length);
-                    }
-                }
 
-                return ms.ToArray();
-            }
+          
+
+            return arr;
         }
+
+
         #endregion
 
+        public static void Foo(ref object structObject)
+        {
+            FieldInfo[] members = structObject.GetType().GetFields();
 
+            object tempValueToAssign = "A test string";
+
+            foreach (FieldInfo fi in members)
+            {
+                // perform update of FieldInfo fi
+                fi.GetValue(structObject);
+            }
+        }
 
 
     }

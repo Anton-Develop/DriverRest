@@ -17,6 +17,7 @@ using System.Text.Json;
 using System.Runtime.Serialization.Json;
 using System.Net;
 using Microsoft.AspNetCore.Http.Extensions;
+using System.Reflection;
 
 namespace DriverRest.Controllers
 {
@@ -75,15 +76,19 @@ namespace DriverRest.Controllers
                                 byte pid = 0; 
 
                                 byte status = 1;
-                               
+
                                 
-                                                                
+                                
+
+                               
+
                                 var date = DataTransformer.Date_for_CMD(Convert.ToUInt32(SrcAddr), Convert.ToUInt32(DstAddr), pid,CMD,status, TextSTR,strNum,Color,Alighn);
+
 
                                 var Word_Cooding = CRC.Coding(date);
                                 for (int l=0; l<Word_Cooding.Length;l++)
                                 {
-                                    //Console.WriteLine("bit"+l+"  =  "+Word_Cooding[l]);
+                                    Console.Write(Word_Cooding[l]);
                                 }
                                 
                                 byte[] Status_Feedback;
