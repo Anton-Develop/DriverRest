@@ -137,8 +137,9 @@ namespace DriverRest.Controllers
             {
                 Console.WriteLine("Post error:___"+ex);
             }
-            
-            return Ok("Пришла пора комаров кормить");
+            TcomPaket_Feedback[] _Feedbacks;
+            _Feedbacks = new TcomPaket_Feedback[1];
+            return Ok("Пришла пора комаров кормить" + _Feedbacks[1].Status);
             
             
 
