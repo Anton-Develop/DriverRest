@@ -88,7 +88,7 @@ namespace DriverRest.Controllers
                                 var Word_Cooding = CRC.Coding(date);
                                 for (int l=0; l<Word_Cooding.Length;l++)
                                 {
-                                    Console.Write(Word_Cooding[l]);
+                                    //Console.Write(Word_Cooding[l]);
                                 }
                                 
                                 byte[] Status_Feedback;
@@ -100,8 +100,16 @@ namespace DriverRest.Controllers
 
                                 #endregion
                                 #region TCP_CLIENT
-                                TCP_Client _Client = new TCP_Client();
-                                _Client.Connect(8888, IP, Word_Cooding, out Status_Feedback);
+                                try
+                                {
+                                    TCP_Client _Client = new TCP_Client();
+                                    _Client.Connect(8888, IP, Word_Cooding, out Status_Feedback);
+                                }
+                                catch (Exception ex)
+                                {
+                                   
+                                }
+                                
                                 #endregion
                                 break;
                             case 1:

@@ -10,35 +10,51 @@ namespace DriverRest.Services
 {
     public class TCP_Client
     {
+        private static bool accept { get; set; }
         public  void  Connect(int port, string server, byte[] data, out byte[] buffer)
         {
             buffer = new byte[1024];
             try
             {
                 TcpClient client = new TcpClient();
-                client.Connect(server, port);
+               // client.Connect(server, port);
+                var result = client.BeginConnect(server, port, null, null);
+                accept = true;
+                var success = result.AsyncWaitHandle.WaitOne(TimeSpan.FromSeconds(1));
 
-               
-                StringBuilder response = new StringBuilder();
-                NetworkStream stream = client.GetStream();
-                if (data is not null)
+                if (success )
                 {
-                    stream.Write(data, 0, data.Length);
-                }
-
-                if (stream.DataAvailable)
-                {
-                    do
+                    while (true)
                     {
-                        stream.Read(buffer, 0, buffer.Length);
+                        StringBuilder response = new StringBuilder();
+                        NetworkStream stream = client.GetStream();
+                        if (data is not null)
+                        {
+                            stream.Write(data, 0, data.Length);
+                        }
+
+                        if (stream.DataAvailable)
+                        {
+                            do
+                            {
+                                stream.Read(buffer, 0, buffer.Length);
 
 
+                            }
+                            while (stream.DataAvailable); // пока данные есть в потоке
+                        }
+
+                        // Закрываем потоки
+                        stream.Close();
                     }
-                    while (stream.DataAvailable); // пока данные есть в потоке
                 }
-                // Закрываем потоки
-                stream.Close();
+                else
+                {
+                    Console.WriteLine("Server not found");
+                }
+                client.EndConnect(result);
                 client.Close();
+                
             }
             catch (SocketException e)
             {
@@ -46,11 +62,11 @@ namespace DriverRest.Services
             }
             catch (Exception e)
             {
-               Console.WriteLine("Exception: {0}", e.Message);
+                Console.WriteLine("Exception: {0}", e.Message);
             }
 
             Console.WriteLine("Запрос завершен...");
-            Console.Read();
+            
         }
         
 
