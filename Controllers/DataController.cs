@@ -80,7 +80,7 @@ namespace DriverRest.Controllers
 
 
 
-                                Console.WriteLine("Count" + Counter);
+                               
 
                                 var date = DataTransformer.Date_for_CMD(Convert.ToUInt32(SrcAddr), Convert.ToUInt32(DstAddr), pid,CMD,status, TextSTR,strNum,Color,Alighn);
 

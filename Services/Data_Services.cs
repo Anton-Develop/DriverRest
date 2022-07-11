@@ -79,6 +79,8 @@ namespace DriverRest.Services
 
 
         #endregion
+      
+
 
         public static void Foo(ref object structObject)
         {

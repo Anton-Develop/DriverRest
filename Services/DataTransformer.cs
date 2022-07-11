@@ -27,7 +27,11 @@ namespace DriverRest.Services
                     PId = PId,
                     Cmd = 0x01
                 };
-                vs1 = Data_Services.StructToByteArray<TcomPaket>(paket);
+                byte[] word = new byte[] {(byte)paket.DstAddr,(byte)paket.SrcAddr,paket.PId,paket.Status,paket.Cmd,(byte)paket.DataLen };
+                vs1 = CRC.ConcatA(word, paket.Data);
+               
+                //vs1 = Data_Services.StructToByteArray<TcomPaket>(paket);
+
             }
             //Установка яркости
             if (command == "0x02")
@@ -45,8 +49,11 @@ namespace DriverRest.Services
 
 
                 paket.Data[0] = Convert.ToByte(TextSTR);
-                
-                vs1 = Data_Services.StructToByteArray<TcomPaket>(paket);
+
+                //Manual serialiazed
+                byte[] word = new byte[] { (byte)paket.DstAddr, (byte)paket.SrcAddr, paket.PId, paket.Status, paket.Cmd, (byte)paket.DataLen };
+                vs1 = CRC.ConcatA(word, paket.Data);
+                //vs1 = Data_Services.StructToByteArray<TcomPaket>(paket);
 
 
 
@@ -75,9 +82,11 @@ namespace DriverRest.Services
                 paket.Data[3] = Convert.ToByte(words[3]);
                 paket.Data[4] = Convert.ToByte(words[4]);
                 paket.Data[5] = Convert.ToByte(words[5]);
-               
-              
-                vs1 = Data_Services.StructToByteArray<TcomPaket>(paket);
+
+                //Manual serialiazed
+                byte[] word = new byte[] { (byte)paket.DstAddr, (byte)paket.SrcAddr, paket.PId, paket.Status, paket.Cmd, (byte)paket.DataLen };
+                vs1 = CRC.ConcatA(word, paket.Data);
+                //  vs1 = Data_Services.StructToByteArray<TcomPaket>(paket);
 
             }
             //Чтение часов 
@@ -121,10 +130,12 @@ namespace DriverRest.Services
                     paket.Data[9+i] = array[i];
                    
                 }
+
+                //Manual serialiazed
+                byte[] word = new byte[] { (byte)paket.DstAddr, (byte)paket.SrcAddr, paket.PId, paket.Status, paket.Cmd, (byte)paket.DataLen };
+                vs1 = CRC.ConcatA(word, paket.Data);
                 
-               
-               
-                vs1 = Data_Services.StructToByteArray<TcomPaket>(paket);
+               // vs1 = Data_Services.StructToByteArray<TcomPaket>(paket);
                 
 
             }
@@ -133,7 +144,7 @@ namespace DriverRest.Services
             if (command == "0x1B")
             {
                 TcomPaket paket = new TcomPaket();
-                Console.WriteLine("Вывод текста в текстовые зоны");
+                Console.WriteLine("Вывод текста в текстовые поля");
                 paket.SrcAddr = (SrcAddr);
                 paket.DstAddr = (DstAddr);
                 paket.PId = PId;
@@ -157,15 +168,13 @@ namespace DriverRest.Services
                 
 
                 for (int i = 0; i < array.Length; i++)
-                {
-
+                { 
                     paket.Data[7 + i] = array[i];
-                    
-
-
                 }
-               
-                vs1 = Data_Services.StructToByteArray<TcomPaket>(paket);
+                //Manual serialiazed
+                byte[] word = new byte[] { (byte)paket.DstAddr, (byte)paket.SrcAddr, paket.PId, paket.Status, paket.Cmd, (byte)paket.DataLen };
+                vs1 = CRC.ConcatA(word, paket.Data);
+                //vs1 = Data_Services.StructToByteArray<TcomPaket>(paket);
             }
             //Вывод данных на семисегментные индикаторы по строкам и столбцам
             if (command == "0x0F")
@@ -193,7 +202,10 @@ namespace DriverRest.Services
                 {
                     pakets.Data[9 + i] = array[i];
                 }
-                vs1 = Data_Services.StructToByteArray<TcomPaket>(pakets);
+                //Manual serialiazed
+                byte[] word = new byte[] { (byte)pakets.DstAddr, (byte)pakets.SrcAddr, pakets.PId, pakets.Status, pakets.Cmd, (byte)pakets.DataLen };
+                vs1 = CRC.ConcatA(word, pakets.Data);
+               // vs1 = Data_Services.StructToByteArray<TcomPaket>(pakets);
 
 
             }
@@ -213,7 +225,10 @@ namespace DriverRest.Services
                 };
                 paket.Data[0] = 1;
                 paket.Data[1] = 1;
-                vs1 = Data_Services.StructToByteArray<TcomPaket>(paket);
+                //Manual serialiazed
+                byte[] word = new byte[] { (byte)paket.DstAddr, (byte)paket.SrcAddr, paket.PId, paket.Status, paket.Cmd, (byte)paket.DataLen };
+                vs1 = CRC.ConcatA(word, paket.Data);
+                //vs1 = Data_Services.StructToByteArray<TcomPaket>(paket);
             }
             //Установка значений счетчиков
             if (command == "0x53")
