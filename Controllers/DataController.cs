@@ -99,6 +99,10 @@ namespace DriverRest.Controllers
                                 //TcomPaket_Feedback tcomPaket_Feedback = Data_Services.BytesToStruct(Status_Feedback);
 
                                 #endregion
+                                #region TCP_CLIENT
+                                TCP_Client _Client = new TCP_Client();
+                                _Client.Connect(8888, IP, Word_Cooding, out Status_Feedback);
+                                #endregion
                                 break;
                             case 1:
                                 var SrcAddr1 = Data.ElementAtOrDefault(0).Value;
