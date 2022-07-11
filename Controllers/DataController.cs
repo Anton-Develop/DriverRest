@@ -28,8 +28,8 @@ namespace DriverRest.Controllers
     public class DataController :  ControllerBase
     {
         protected IDictionary<string, object> Data;
-            
 
+        public static int Counter = 0;
 
 
         [HttpPost]
@@ -48,7 +48,7 @@ namespace DriverRest.Controllers
             }
             try
             {
-
+                Counter+=1;
                 var CountNabor = contex.Count();
                
                 if( CountNabor>0)
@@ -73,14 +73,14 @@ namespace DriverRest.Controllers
                                 var TextSTR = Data.ElementAtOrDefault(7).Value.ToString();
                                 
                                 
-                                byte pid = 0; 
+                                byte pid = (byte)Counter; 
 
                                 byte status = 1;
 
-                                
-                                
 
-                               
+
+
+                                Console.WriteLine("Count" + Counter);
 
                                 var date = DataTransformer.Date_for_CMD(Convert.ToUInt32(SrcAddr), Convert.ToUInt32(DstAddr), pid,CMD,status, TextSTR,strNum,Color,Alighn);
 
@@ -137,9 +137,9 @@ namespace DriverRest.Controllers
             {
                 Console.WriteLine("Post error:___"+ex);
             }
-            TcomPaket_Feedback[] _Feedbacks;
-            _Feedbacks = new TcomPaket_Feedback[1];
-            return Ok("Пришла пора комаров кормить" + _Feedbacks[1].Status);
+         //   TcomPaket_Feedback[] _Feedbacks;
+          //  _Feedbacks = new TcomPaket_Feedback[1];
+            return Ok("Пришла пора комаров кормить" );
             
             
 
