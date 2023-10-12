@@ -30,7 +30,7 @@ namespace DriverRest.Controllers
         protected IDictionary<string, object> Data;
 
         public static int Counter = 0;
-
+        private string StrMessage;
 
         [HttpPost]
         [SwaggerOperation(Summary = "Creates the product data", Description = "Returns newly created productData")]
@@ -103,11 +103,13 @@ namespace DriverRest.Controllers
                                 try
                                 {
                                     TCP_Client _Client = new TCP_Client();
-                                    _Client.Connect(8888, IP, Word_Cooding, out Status_Feedback);
+                                    _Client.Connect(8888, IP, Word_Cooding, out Status_Feedback, out StrMessage);
+                                   
                                 }
                                 catch (Exception ex)
                                 {
-                                   
+                                  
+                                    Console.WriteLine(ex.InnerException);
                                 }
                                 
                                 #endregion
@@ -149,17 +151,18 @@ namespace DriverRest.Controllers
             {
                 Console.WriteLine("Post error:___"+ex);
             }
-         //   TcomPaket_Feedback[] _Feedbacks;
-          //  _Feedbacks = new TcomPaket_Feedback[1];
-            return Ok("Пришла пора комаров кормить" );
-            
-            
+            //   TcomPaket_Feedback[] _Feedbacks;
+            //  _Feedbacks = new TcomPaket_Feedback[1];
+            return Content(StrMessage);
 
-            
+
+
+
+
         }
-        
-       
-        
+
+
+
 
     }
 }

@@ -11,8 +11,9 @@ namespace DriverRest.Services
     public class TCP_Client
     {
         private static bool accept { get; set; }
-        public  void  Connect(int port, string server, byte[] data, out byte[] buffer)
+        public  void  Connect(int port, string server, byte[] data, out byte[] buffer,  out string MessageEX)
         {
+            MessageEX = "";
             buffer = new byte[1024];
             try
             {
@@ -51,6 +52,7 @@ namespace DriverRest.Services
                 else
                 {
                     Console.WriteLine("Server not found");
+                    MessageEX = "Табло не отвечает";
                 }
                 client.EndConnect(result);
                 client.Close();
